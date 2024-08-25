@@ -7,7 +7,7 @@
 
 int main(){
 
-    char *functions[] = {"exit", "echo", "type"};
+    char *functions[] = {"exit", "echo", "type", "cd", "pwd"};
 
     while(true){
         // Print prompt
