@@ -9,6 +9,7 @@
 void home_directory(char input[]);
 void get_window_ver();
 void get_system_info();
+void Read_file(char file[]);
 
 int main(){
 
@@ -77,18 +78,23 @@ int main(){
             continue;
         }
 
+        // List the computer's information
         if (!strcmp(input, "sysinfo")) {
-
             get_window_ver();
             get_system_info();
             continue;
         }
 
+        // Clearing terminal
         if (!strcmp(input, "clear")) {
             system("cls");
             continue;
         }
 
+        if (!strncmp(input, "cat", strlen("cat"))) {
+            Read_file(input + 4);
+            continue;
+        }
 
         // If command is not found in shell
         printf("%s: command not found\n", input);
@@ -161,4 +167,47 @@ void get_system_info() {
     }
 
     printf("Number of processors: %u\n", systeminformation.dwNumberOfProcessors);
+}
+
+
+void Read_file(char file[]) {
+    HANDLE hFile = CreateFile(
+        file,           // File name
+        GENERIC_READ,            // Open for reading
+        0,                       // Do not share
+        NULL,                    // Default security
+        OPEN_EXISTING,           // Open existing file only
+        FILE_ATTRIBUTE_NORMAL,   // Normal file
+        NULL                     // No template file
+    );
+    
+    // If file is not found
+    if (hFile == INVALID_HANDLE_VALUE) 
+    { 
+        printf("%s not found.\n", file);
+    }
+    else {
+        DWORD bytesRead;
+        char buffer[1000000];  // Buffer to store the read data
+        BOOL success = ReadFile(
+            hFile,            // Handle to the file
+            buffer,           // Buffer to store data
+            sizeof(buffer) - 1, // Number of bytes to read (leaving space for null terminator)
+            &bytesRead,       // Number of bytes that were read
+            NULL              // No overlapping structure (for asynchronous I/O)
+        );
+
+        if (!success) {
+            printf("Could not read file (error %lu)\n", GetLastError());
+            CloseHandle(hFile);
+        }
+        else {
+            // Process the data
+            buffer[bytesRead] = '\0';  // Null-terminate the buffer
+            printf("%s\n", buffer);
+
+            // Close the file handle
+            CloseHandle(hFile);
+        }
+    }
 }
