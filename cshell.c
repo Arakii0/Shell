@@ -5,6 +5,11 @@
 #include <Windows.h>
 #include <Shlobj.h>
 
+
+void home_directory(char input[]);
+void get_window_ver();
+void get_system_info();
+
 int main(){
 
     char *functions[] = {"exit", "echo", "type", "cd", "pwd"};
@@ -62,13 +67,7 @@ int main(){
 
             // Changes to user's home directory
             if (!strcmp(input + 3, "~")){
-                WCHAR homeDir[100];
-                if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PROFILE, NULL, 0, homeDir))) {
-                    SetCurrentDirectoryW(homeDir);
-                }
-                else {
-                    printf("cd %s: Home Directory not found\n", input + 3);
-                }
+                home_directory(input);
                 continue;
             }
 
@@ -78,6 +77,17 @@ int main(){
             continue;
         }
 
+        if (!strcmp(input, "sysinfo")) {
+
+            get_window_ver();
+            get_system_info();
+            continue;
+        }
+
+        if (!strcmp(input, "clear")) {
+            system("cls");
+            continue;
+        }
 
 
         // If command is not found in shell
@@ -85,4 +95,70 @@ int main(){
     }
     
     return 0;
+}
+
+
+
+
+
+void home_directory(char input[]) {
+     WCHAR homeDir[100];
+        if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PROFILE, NULL, 0, homeDir))) {
+            SetCurrentDirectoryW(homeDir);
+        }
+        else {
+            printf("cd %s: Home Directory not found\n", input + 3);
+        }
+}
+
+
+void get_window_ver() {
+    DWORD dwVersion = 0; 
+    DWORD dwMajorVersion = 0;
+    DWORD dwMinorVersion = 0; 
+    DWORD dwBuild = 0;
+
+    dwVersion = GetVersion();
+ 
+    // Get the Windows version.
+    dwMajorVersion = (DWORD)(LOBYTE(LOWORD(dwVersion)));
+    dwMinorVersion = (DWORD)(HIBYTE(LOWORD(dwVersion)));
+
+    // Get the build number.
+    if (dwVersion < 0x80000000)              
+        dwBuild = (DWORD)(HIWORD(dwVersion));
+
+    printf("Version is %d.%d (%d)\n", 
+                dwMajorVersion,
+                dwMinorVersion,
+                dwBuild);
+}
+
+
+void get_system_info() {
+    SYSTEM_INFO systeminformation;
+    // Get the system information
+    GetNativeSystemInfo(&systeminformation);
+
+    printf("Processor Architecture: ");
+    switch (systeminformation.wProcessorArchitecture) {
+        case PROCESSOR_ARCHITECTURE_AMD64:
+            printf("x64 (AMD or Intel)\n");
+            break;
+        case PROCESSOR_ARCHITECTURE_ARM:
+            printf("ARM\n");
+            break;
+        case PROCESSOR_ARCHITECTURE_ARM64:
+            printf("ARM64\n");
+            break;
+        case PROCESSOR_ARCHITECTURE_INTEL:
+            printf("x86\n");
+            break;
+        case PROCESSOR_ARCHITECTURE_UNKNOWN:
+        default:
+            printf("Unknown architecture\n");
+            break;
+    }
+
+    printf("Number of processors: %u\n", systeminformation.dwNumberOfProcessors);
 }
