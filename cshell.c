@@ -99,11 +99,9 @@ int main(){
         }
 
         if (!strcmp(input, "ls")) {
-            
-            
-            
-            
-            
+            char path[100];
+            GetCurrentDirectory(100 ,path);
+            List_files(path);
             continue;
         }
 
@@ -224,9 +222,35 @@ void Read_file(char file[]) {
 }
 
 
-void List_files() {
+void List_files(char directory_path[]) {
+    WIN32_FIND_DATA findFileData;
+    HANDLE hFind = INVALID_HANDLE_VALUE;
 
+    // Specify the directory and file type (e.g., *.* for all files)
+    char all_files[] = "\\*.*";
+    strcat(directory_path, all_files);
 
+    // Step 1: Find the first file in the directory
+    hFind = FindFirstFile(directory_path, &findFileData);
 
+    if (hFind == INVALID_HANDLE_VALUE) {
+        printf("FindFirstFile failed (error %lu)\n", GetLastError());
+    } 
 
+    // Step 2: List all the files in the directory
+    do {
+        if (findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+            printf("[DIR]  %s\n", findFileData.cFileName); // It's a directory
+        } else {
+            printf("[FILE] %s\n", findFileData.cFileName); // It's a file
+        }
+    } while (FindNextFile(hFind, &findFileData) != 0);
+
+    // Step 3: Handle the end of the list or errors
+    if (GetLastError() != ERROR_NO_MORE_FILES) {
+        printf("FindNextFile failed (error %lu)\n", GetLastError());
+    }
+
+    // Close the search handle
+    FindClose(hFind);
 }
