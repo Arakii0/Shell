@@ -10,6 +10,7 @@ void home_directory(char input[]);
 void get_window_ver();
 void get_system_info();
 void Read_file(char file[]);
+void List_files();
 
 int main(){
 
@@ -220,4 +221,12 @@ void Read_file(char file[]) {
             CloseHandle(hFile);
         }
     }
+}
+
+
+void List_files() {
+
+
+
+
 }
