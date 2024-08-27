@@ -13,7 +13,7 @@ void Read_file(char file[]);
 
 int main(){
 
-    char *functions[] = {"exit", "echo", "type", "cd", "pwd"};
+    char *functions[] = {"exit", "echo", "type", "cd", "pwd", "sysinfo", "clear", "cat"};
 
     while(true){
         // Print prompt
