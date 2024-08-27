@@ -98,10 +98,8 @@ int main(){
             continue;
         }
 
-        if (!strcmp(input, "ls")) {
-            char path[100];
-            GetCurrentDirectory(100 ,path);
-            List_files(path);
+        if (!strncmp(input, "ls", strlen("ls"))) {
+            List_files(input + 3);
             continue;
         }
 
@@ -111,8 +109,6 @@ int main(){
     
     return 0;
 }
-
-
 
 
 
@@ -225,6 +221,13 @@ void Read_file(char file[]) {
 void List_files(char directory_path[]) {
     WIN32_FIND_DATA findFileData;
     HANDLE hFind = INVALID_HANDLE_VALUE;
+
+    // FIX THIS
+    if (directory_path == "") {
+        char path[100];
+        GetCurrentDirectory(100 ,path);
+        strcpy(directory_path, path);
+    }
 
     // Specify the directory and file type (e.g., *.* for all files)
     char all_files[] = "\\*.*";
