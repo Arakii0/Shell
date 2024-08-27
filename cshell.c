@@ -14,7 +14,7 @@ void List_files(char directory_path[]);
 
 int main(){
 
-    char *functions[] = {"exit", "echo", "type", "cd", "pwd"};
+    char *functions[] = {"exit", "echo", "type", "cd", "pwd", "sysinfo", "clear", "cat", "ls"};
 
     while(true){
         // Print prompt
