@@ -91,6 +91,7 @@ int main(){
             continue;
         }
 
+        // list contents of file
         if (!strncmp(input, "cat", strlen("cat"))) {
             Read_file(input + 4);
             continue;
