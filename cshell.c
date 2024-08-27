@@ -10,7 +10,7 @@ void home_directory(char input[]);
 void get_window_ver();
 void get_system_info();
 void Read_file(char file[]);
-void List_files();
+void List_files(char directory_path[]);
 
 int main(){
 
@@ -98,8 +98,16 @@ int main(){
             continue;
         }
 
+        // list files in a directory, accepts arguments
         if (!strncmp(input, "ls", strlen("ls"))) {
-            List_files(input + 3);
+            // Try to see if can implement so that we if we ls a space, it still defaults to the current directory
+            if (strlen(input) == 2) {
+                char path[100];
+                GetCurrentDirectory(100 ,path);
+                List_files(path);
+            } else {
+                List_files(input + 3);
+            }
             continue;
         }
 
@@ -109,6 +117,7 @@ int main(){
     
     return 0;
 }
+
 
 
 
@@ -221,13 +230,6 @@ void Read_file(char file[]) {
 void List_files(char directory_path[]) {
     WIN32_FIND_DATA findFileData;
     HANDLE hFind = INVALID_HANDLE_VALUE;
-
-    // FIX THIS
-    if (directory_path == "") {
-        char path[100];
-        GetCurrentDirectory(100 ,path);
-        strcpy(directory_path, path);
-    }
 
     // Specify the directory and file type (e.g., *.* for all files)
     char all_files[] = "\\*.*";
