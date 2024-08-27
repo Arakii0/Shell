@@ -14,6 +14,7 @@ void List_files(char directory_path[]);
 
 int main(){
 
+    // all thr builtin function
     char *functions[] = {"exit", "echo", "type", "cd", "pwd", "sysinfo", "clear", "cat", "ls"};
 
     while(true){
