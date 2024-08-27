@@ -13,7 +13,7 @@ void Read_file(char file[]);
 
 int main(){
 
-    char *functions[] = {"exit", "echo", "type", "cd", "pwd", "sysinfo", "clear", "cat"};
+    char *functions[] = {"exit", "echo", "type", "cd", "pwd"};
 
     while(true){
         // Print prompt
@@ -94,6 +94,15 @@ int main(){
         // list contents of file
         if (!strncmp(input, "cat", strlen("cat"))) {
             Read_file(input + 4);
+            continue;
+        }
+
+        if (!strcmp(input, "ls")) {
+            
+            
+            
+            
+            
             continue;
         }
 
