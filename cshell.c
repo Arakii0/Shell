@@ -11,8 +11,9 @@ void get_window_ver();
 void get_system_info();
 void Read_file(char file[]);
 void List_files(char directory_path[]);
+char *currentusername();
 
-int main(){
+int main(void){
 
     // all the builtin function
     char *functions[] = {"exit", "echo", "type", "cd", "pwd", "sysinfo", "clear", "cls", "cat", "ls", "history", "hist"};
@@ -21,11 +22,11 @@ int main(){
     int capacity = 2;
     int size = 0;
     char **history = malloc(capacity * sizeof(char *));
-    
+    char *username = currentusername();
 
     while(true){
         // Print prompt
-        printf("$ ");
+        printf("%s# ", username);
         fflush(stdout);
 
         // Wait for user input
@@ -140,6 +141,12 @@ int main(){
             continue;
         }
 
+        // Prints the curent user that is using the shell
+        if (strcmp(input, "whoami") || strcmp(input, "id")) {
+            char* username = getenv("USERNAME");
+            printf("%s\n", username);
+            continue;
+        }
 
         // If command is not found in shell
         printf("%s: command not found\n", input);
@@ -148,6 +155,24 @@ int main(){
     return 0;
 }
 
+
+
+
+
+
+
+// Function to get the current user' name and computername
+char *currentusername() {
+    static char computername[100];
+    DWORD buffersize = sizeof(computername) / sizeof(computername[0]);
+    GetComputerName(computername, &buffersize);
+    char* username = getenv("USERNAME");
+
+    strcat(computername, "\\");
+    strcat(computername, username);
+
+    return computername;
+}
 
 
 // Function to get the user's home directory and change to it
