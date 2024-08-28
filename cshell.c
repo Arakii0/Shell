@@ -15,7 +15,6 @@ void List_files(char directory_path[]);
 int main(){
 
     // all the builtin function
-    
     char *functions[] = {"exit", "echo", "type", "cd", "pwd", "sysinfo", "clear", "cls", "cat", "ls", "history", "hist"};
 
     // Implement dynamic memory for history list
@@ -151,7 +150,7 @@ int main(){
 
 
 
-
+// Function to get the user's home directory and change to it
 void home_directory(char input[]) {
      WCHAR homeDir[100];
         if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PROFILE, NULL, 0, homeDir))) {
@@ -163,6 +162,7 @@ void home_directory(char input[]) {
 }
 
 
+// Function to get current computer's version
 void get_window_ver() {
     DWORD dwVersion = 0; 
     DWORD dwMajorVersion = 0;
@@ -186,6 +186,7 @@ void get_window_ver() {
 }
 
 
+// Function to get the current computer's specifications
 void get_system_info() {
     SYSTEM_INFO systeminformation;
     // Get the system information
@@ -215,6 +216,7 @@ void get_system_info() {
 }
 
 
+// Function to read contents of file
 void Read_file(char file[]) {
     HANDLE hFile = CreateFile(
         file,           // File name
@@ -258,6 +260,7 @@ void Read_file(char file[]) {
 }
 
 
+// Function to list files in a specific directory
 void List_files(char directory_path[]) {
     WIN32_FIND_DATA findFileData;
     HANDLE hFind = INVALID_HANDLE_VALUE;
