@@ -16,7 +16,7 @@ char *currentusername();
 int main(void){
 
     // all the builtin function
-    char *functions[] = {"exit", "echo", "type", "cd", "pwd", "sysinfo", "clear", "cls", "cat", "ls", "history", "hist"};
+    char *functions[] = {"exit", "echo", "type", "cd", "pwd", "sysinfo", "clear", "cls", "cat", "ls", "history", "hist", "whoami", "id"};
 
     // Implement dynamic memory for history list
     int capacity = 2;
