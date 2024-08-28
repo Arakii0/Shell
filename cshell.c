@@ -1,3 +1,8 @@
+/*
+Program: Shell Emulator in C language
+Author: Araki
+*/
+
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
