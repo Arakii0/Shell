@@ -14,8 +14,15 @@ void List_files(char directory_path[]);
 
 int main(){
 
-    // all thr builtin function
-    char *functions[] = {"exit", "echo", "type", "cd", "pwd", "sysinfo", "clear", "cat", "ls"};
+    // all the builtin function
+    
+    char *functions[] = {"exit", "echo", "type", "cd", "pwd", "sysinfo", "clear", "cls", "cat", "ls", "history", "hist"};
+
+    // Implement dynamic memory for history list
+    int capacity = 2;
+    int size = 0;
+    char **history = malloc(capacity * sizeof(char *));
+    
 
     while(true){
         // Print prompt
@@ -29,8 +36,22 @@ int main(){
         // Remove newline character
         input[strlen(input) - 1] = '\0'; 
 
+        // Adds command to history
+        if (size >= capacity) {
+            capacity *= 2;
+            history = realloc(history, capacity * sizeof(char *));
+        }
+        history[size] = malloc((strlen(input) + 1) * sizeof(char));
+        strcpy(history[size], input);
+        size++;
+
         // Exit Command
         if (!strcmp(input, "exit")) {
+            // Free up th memory used by the history list
+            for (int i = 0; i < size; i++) {
+                free(history[i]);
+            }
+            free(history);
             exit(0);
         }
 
@@ -88,7 +109,7 @@ int main(){
         }
 
         // Clearing terminal
-        if (!strcmp(input, "clear")) {
+        if (!strcmp(input, "clear") || !strcmp(input, "cls")) {
             system("cls");
             continue;
         }
@@ -111,6 +132,15 @@ int main(){
             }
             continue;
         }
+
+        // Lists the history of the commands
+        if (!strcmp(input, "history") || !strcmp(input, "hist")) {
+            for (int i = 0; i < size; i++) {
+                printf("%i: %s\n", i+1, history[i]);
+            }
+            continue;
+        }
+
 
         // If command is not found in shell
         printf("%s: command not found\n", input);
